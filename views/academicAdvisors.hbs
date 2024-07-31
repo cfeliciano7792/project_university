@@ -1,0 +1,57 @@
+<!-- views/academicAdvisor.hbs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Academic Advisors</title>
+</head>
+<body>
+    <h1>Academic Advisors</h1>
+    <p>This is the Academic Advisors page.</p>
+
+{{!-- Create a table --}}
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.advisorID}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.salary}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- /views/index.hbs -->
+
+<p>To add a new academic advisor, please enter their information below and click `Submit`!</p>
+<form id="add-advisor-form" method="POST" action="/add-advisor-form">
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name">
+    
+    <label for="input-salary">Salary: </label>
+    <input type="number" name="input-salary" id="input-salary">
+
+    <input type="submit">
+</form>
+
+</body>
+</html>

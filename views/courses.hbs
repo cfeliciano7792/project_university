@@ -1,0 +1,64 @@
+<!-- views/courses.hbs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Courses</title>
+</head>
+<body>
+    <h1>Courses</h1>
+    <p>This is the Courses page.</p>
+
+{{!-- Create a table --}}
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.courseID}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.credits}}</td>
+            <td>{{this.departmentID}}</td>
+            <td>{{#if this.facultyID}}{{this.facultyID}}{{else}}Staff{{/if}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+<p>To add a new course, please enter the required information below and click `Submit`!</p>
+<form id="add-course-form" method="POST" action="/add-course-form">
+    <label for="input-title">Title: </label>
+    <input type="text" name="input-title" id="input-title">
+    
+    <label for="input-credits">Credits: </label>
+    <input type="number" name="input-credits" id="input-credits">
+
+    <label for="input-departmentID">Department ID: </label>
+    <input type="number" name="input-departmentID" id="input-departmentID">
+
+    <label for="input-facultyID">Faculty ID: </label>
+    <input type="number" name="input-facultyID" id="input-facultyID">
+
+    <input type="submit">
+</form>
+
+</body>
+</html>
