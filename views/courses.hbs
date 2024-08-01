@@ -51,8 +51,15 @@
     <label for="input-credits">Credits: </label>
     <input type="number" name="input-credits" id="input-credits">
 
-    <label for="input-departmentID">Department ID: </label>
-    <input type="number" name="input-departmentID" id="input-departmentID">
+    {{!-- <label for="input-departmentID">Department ID: </label>
+    <input type="number" name="input-departmentID" id="input-departmentID"> --}}
+
+    <select name="input-departmentID" id="input-departmentID">
+        <option value="">Select a Department</option>
+        {{#each departments}}
+        <option value="{{this.departmentID}}">{{this.name}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-facultyID">Faculty ID: </label>
     <input type="number" name="input-facultyID" id="input-facultyID">

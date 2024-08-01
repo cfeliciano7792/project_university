@@ -109,11 +109,23 @@ app.get('/', function(req, res)
     app.get('/courses', function(req, res) {
         let query3 = "SELECT * FROM Courses;";               // Define our query
 
+        let query4 = "SELECT * FROM Departments;";
+
+        let query5 = "SELECT * FROM Faculty;";
+
+        // Run query3
         db.pool.query(query3, function(error, rows, fields){    // Execute the query
 
-            res.render('courses', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        }) 
-    });
+            let courses = rows;
+
+             // Run query4
+            db.pool.query(query4, (error, rows, fields) => {
+
+            let departments = rows;
+            res.render('courses', {data: courses, departments: departments});                  // Render the index.hbs file, and also send the renderer
+            }) 
+        })
+});
 
     app.post('/add-course-form', function(req, res) {
         // Capture the incoming data and parse it back to a JS object
