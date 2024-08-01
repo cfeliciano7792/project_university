@@ -122,9 +122,14 @@ app.get('/', function(req, res)
             db.pool.query(query4, (error, rows, fields) => {
 
             let departments = rows;
-            res.render('courses', {data: courses, departments: departments});                  // Render the index.hbs file, and also send the renderer
+
+            db.pool.query(query5, (error, rows, fields) => {
+
+                let faculty = rows;
+            res.render('courses', {data: courses, departments: departments, faculty:faculty});                  // Render the index.hbs file, and also send the renderer
             }) 
         })
+    })
 });
 
     app.post('/add-course-form', function(req, res) {
