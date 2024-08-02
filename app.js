@@ -186,6 +186,22 @@ app.post('/delete-course/:courseID', function(req, res) {
     });
 });
 
+// delete department
+app.post('/delete-department/:departmentID', function(req, res) {
+    let departmentID = req.params.departmentID;
+
+    let query = `DELETE FROM Departments WHERE departmentID = ${departmentID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
 // -----------------------Handle Updates---------------------------------------------------
 
 // update course
