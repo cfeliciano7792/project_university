@@ -1,4 +1,17 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Departments</title>
+    <script>
+        function openEditForm(departmentID, name, budget) {
+            document.getElementById('edit-department-id').value = departmentID;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-budget').value = budget;
+            document.getElementById('edit-department-form').style.display = 'block';
+        }
+    </script>
+</head>
 <!-- index.hbs -->
 <h1>Departments</h1>
 <p>Viewing current departments.</p>
@@ -17,7 +30,8 @@
                 {{@key}}
             </th>
             {{/each}}
-            <th>delete</th>
+            <th>Delete</th>
+            <th>Edit</th>
         </tr>
     </thead>
 
@@ -35,10 +49,27 @@
                     <button type="submit">Delete</button>
                 </form>
             </td>
+            <td>
+                <button onclick="openEditForm('{{this.departmentID}}', '{{this.name}}', '{{this.budget}}')">Edit</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<br>
+{{!-- // Edit form - will remain hidden until edit button is clicked --}}
+
+    <form id="edit-department-form" method="POST" action="/update-department" style="display: none;">
+        <p><strong>To add a new department, please enter the required information below and click `Update`!</strong></p>
+        <input type="hidden" id="edit-department-id" name="departmentID">
+        <label for="edit-name">Name: </label>
+        <input type="text" name="name" id="edit-name" required>
+        
+        <label for="edit-">Budget: </label>
+        <input type="number" name="budget" id="edit-budget" required>
+
+        <input type="submit" value="Update">
+    </form>
 
 <!-- /views/index.hbs -->
 <br>
@@ -53,3 +84,5 @@
 
     <input type="submit">
 </form>
+
+</html>

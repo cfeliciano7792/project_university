@@ -234,6 +234,25 @@ app.post('/update-course', function(req, res) {
 });
 
 
+// update department
+app.post('/update-department', function(req, res) {
+    let data = req.body;
+    let budget = parseInt(data['budget']);
+
+    // Create the query and run it on the database
+    let query = `UPDATE Departments SET name = '${data['name']}', budget = ${budget} WHERE departmentID = ${data['departmentID']}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
+
     /*
     LISTENER
 */
