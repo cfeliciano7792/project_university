@@ -4,6 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>Academic Advisors</title>
+    <script>
+        function openEditForm(advisorID, name, salary) {
+            document.getElementById('edit-advisor-id').value = advisorID;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-salary').value = salary;
+            document.getElementById('edit-advisor-form').style.display = 'block';
+        }
+    </script>
 </head>
 <body>
     <h1>Academic Advisors</h1>
@@ -23,6 +31,8 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>Delete</th>
+            <th>Edit</th>
         </tr>
     </thead>
 
@@ -35,14 +45,39 @@
             <td>{{this.advisorID}}</td>
             <td>{{this.name}}</td>
             <td>{{this.salary}}</td>
+            <td>
+                <form method="POST" action="/delete-advisor/{{this.advisorID}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td>
+                <button onclick="openEditForm('{{this.advisorID}}', '{{this.name}}', '{{this.salary}}')">Edit</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<br>
+{{!-- // Edit form - will remain hidden until edit button is clicked --}}
+
+    <form id="edit-advisor-form" method="POST" action="/update-advisor" style="display: none;">
+        <p><strong>To add a new advisor, please enter the required information below and click `Update`!</strong></p>
+        <input type="hidden" id="edit-advisor-id" name="advisorID">
+        <label for="edit-name">Name: </label>
+        <input type="text" name="name" id="edit-name" required>
+        
+        <label for="edit-">Salary: </label>
+        <input type="number" name="salary" id="edit-salary" required>
+
+        <input type="submit" value="Update">
+    </form>
 
 <!-- /views/index.hbs -->
 
-<p>To add a new academic advisor, please enter their information below and click `Submit`!</p>
+<!-- /views/index.hbs -->
+<br>
+<br>
+<p><strong>To add a new academic advisor, please enter their information below and click `Submit`!</strong></p>
 <form id="add-advisor-form" method="POST" action="/add-advisor-form">
     <label for="input-name">Name: </label>
     <input type="text" name="input-name" id="input-name">

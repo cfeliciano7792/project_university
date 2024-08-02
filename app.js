@@ -252,6 +252,24 @@ app.post('/update-department', function(req, res) {
     });
 });
 
+// update advisor
+app.post('/update-advisor', function(req, res) {
+    let data = req.body;
+    let salary = parseInt(data['salary']);
+
+    // Create the query and run it on the database
+    let query = `UPDATE AcademicAdvisors SET name = '${data['name']}', salary = ${salary} WHERE advisorID = ${data['advisorID']}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/academicAdvisors');
+        }
+    });
+});
+
 
     /*
     LISTENER
