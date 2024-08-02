@@ -149,7 +149,7 @@ app.get('/', function(req, res)
     
     let facultyID = parseInt(data['input-facultyID']);
         if (isNaN(facultyID)) {
-            facultyID = 'NULL';  // or some default value if you don't want NULL
+            facultyID = 'NULL';  
         }
     
         // Create the query and run it on the database
@@ -169,7 +169,54 @@ app.get('/', function(req, res)
         });
     });
 
-    
+// -----------------------Handle Deletes---------------------------------------------------
+// Delete course
+app.post('/delete-course/:courseID', function(req, res) {
+    let courseID = req.params.courseID;
+
+    let query = `DELETE FROM Courses WHERE courseID = ${courseID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/courses');
+        }
+    });
+});
+
+// -----------------------Handle Updates---------------------------------------------------
+
+// update course
+app.post('/update-course', function(req, res) {
+    let data = req.body;
+
+    // Capture NULL values
+    let credits = parseInt(data['credits']);
+    if (isNaN(credits)) {
+        credits = 0;
+    }
+
+    let departmentID = parseInt(data['departmentID']);
+    let facultyID = parseInt(data['facultyID']);
+    if (isNaN(facultyID)) {
+        facultyID = 'NULL';  
+    }
+
+    // Create the query and run it on the database
+    let query = `UPDATE Courses SET title = '${data['title']}', credits = ${credits}, departmentID = ${departmentID}, facultyID = ${facultyID} WHERE courseID = ${data['courseID']}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/courses');
+        }
+    });
+});
+
 
     /*
     LISTENER
