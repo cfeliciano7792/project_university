@@ -1,5 +1,7 @@
-// http://classwork.engr.oregonstate.edu/
-// http://classwork.engr.oregonstate.edu:7792/
+// # Citation for app.js:
+// # Date: 8/1/2024
+// # Copied from the cs340 Node Starter guide:
+// # Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
 
 /*
@@ -72,10 +74,11 @@ app.get('/', function(req, res)
 
         db.pool.query(query2, function(error, rows, fields){    // Execute the query
 
-            res.render('academicAdvisors', {data: rows});                  // Render the index.hbs file, and also send the renderer
+            res.render('academicAdvisors', {data: rows});                  
         }) 
     });
 
+    // Code that handles adding a new advisor to the database. Adapted from node starter code
     app.post('/add-advisor-form', function(req, res) {
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
@@ -105,7 +108,8 @@ app.get('/', function(req, res)
             }
         });
     });
-
+    
+// reads courses tables
     app.get('/courses', function(req, res) {
         let query3 = "SELECT * FROM Courses;";               // Define our query
 
@@ -132,6 +136,7 @@ app.get('/', function(req, res)
     })
 });
 
+// Code that handles adding a new course to the database. Adapted from node starter code
     app.post('/add-course-form', function(req, res) {
         // Capture the incoming data and parse it back to a JS object
         let data = req.body;
