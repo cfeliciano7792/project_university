@@ -1,3 +1,9 @@
+{{!-- # Citation for academicAdvisors.hbs:
+# Date: 8/1/2024
+# Copied from the cs340 Node Starter guide:
+# Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
+
 <!-- views/academicAdvisor.hbs -->
 <!DOCTYPE html>
 <html>
@@ -5,6 +11,7 @@
     <meta charset="utf-8">
     <title>Academic Advisors</title>
     <script>
+        // This function keeps the edit form hidden until a user selects update
         function openEditForm(advisorID, name, salary) {
             document.getElementById('edit-advisor-id').value = advisorID;
             document.getElementById('edit-name').value = name;
@@ -39,7 +46,7 @@
     {{!-- Body section --}}
     <tbody>
 
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{!-- For each row, print the id, name, and salary --}}
         {{#each data}}
         <tr>
             <td>{{this.advisorID}}</td>
@@ -77,6 +84,7 @@
 <!-- /views/index.hbs -->
 <br>
 <br>
+{{!-- creates form to add a new advisor to the table --}}
 <p><strong>To add a new academic advisor, please enter their information below and click `Submit`!</strong></p>
 <form id="add-advisor-form" method="POST" action="/add-advisor-form">
     <label for="input-name">Name: </label>
