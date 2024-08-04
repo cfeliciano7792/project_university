@@ -1,3 +1,9 @@
+{{!-- # Citation for courses.hbs:
+# Date: 8/1/2024
+# Copied from the cs340 Node Starter guide:
+# Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
+
 <!-- views/courses.hbs -->
 <!DOCTYPE html>
 <html>
@@ -5,6 +11,7 @@
     <meta charset="utf-8">
     <title>Courses</title>
     <script>
+        // this function keeps the update form hidden until a user clickes the update button
         function openEditForm(courseID, title, credits, departmentID, facultyID) {
             document.getElementById('edit-course-id').value = courseID;
             document.getElementById('edit-title').value = title;
@@ -41,7 +48,7 @@
     {{!-- Body section --}}
     <tbody>
 
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{!-- For each row, print the courseID, title, credits, department and facultyID, in order --}}
         {{#each data}}
         <tr>
             <td>{{this.courseID}}</td>
@@ -50,11 +57,13 @@
             <td>{{this.departmentID}}</td>
             <td>{{#if this.facultyID}}{{this.facultyID}}{{else}}Staff{{/if}}</td>
              <td>
+                {{!-- creates delete button that will delete a course when clicked--}}
                 <form method="POST" action="/delete-course/{{this.courseID}}">
                     <button type="submit">Delete</button>
                 </form>
             </td>
             <td>
+                {{!-- creates udate button --}}
                 <button onclick="openEditForm('{{this.courseID}}', '{{this.title}}', '{{this.credits}}', '{{this.departmentID}}', '{{this.facultyID}}')">Edit</button>
             </td>
         </tr>
@@ -73,7 +82,7 @@
         
         <label for="edit-credits">Credits: </label>
         <input type="number" name="credits" id="edit-credits">
-
+            {{!-- This creates a dynamic dropdown for FK values --}}
         <select name="departmentID" id="edit-departmentID" required>
             <option value="">Select a Department</option>
             {{#each departments}}
@@ -93,7 +102,7 @@
 
 <br>
 <br>
-
+{{!-- This form allows a user to add a new course --}}
 <p>To add a new course, please enter the required information below and click `Submit`!</p>
 <form id="add-course-form" method="POST" action="/add-course-form">
     <label for="input-title">Title: </label>
