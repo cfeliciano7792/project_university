@@ -81,7 +81,7 @@
         <input type="text" name="title" id="edit-title" required>
         
         <label for="edit-credits">Credits: </label>
-        <input type="number" name="credits" id="edit-credits">
+        <input type="number" name="credits" id="edit-credits" min="0">
             {{!-- This creates a dynamic dropdown for FK values --}}
         <select name="departmentID" id="edit-departmentID" required>
             <option value="">Select a Department</option>
@@ -109,7 +109,7 @@
     <input type="text" name="input-title" id="input-title" required>
     
     <label for="input-credits">Credits: </label>
-    <input type="number" name="input-credits" id="input-credits" required>
+    <input type="number" name="input-credits" id="input-credits" min="0" required>
 
     {{!-- <label for="input-departmentID">Department ID: </label>
     <input type="number" name="input-departmentID" id="input-departmentID"> --}}
