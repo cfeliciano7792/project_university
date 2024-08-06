@@ -207,6 +207,21 @@ app.post('/delete-department/:departmentID', function(req, res) {
     });
 });
 
+app.post('/delete-advisor/:advisorID', function(req, res) {
+    let advisorID = req.params.advisorID;
+
+    let query = `DELETE FROM AcademicAdvisors WHERE advisorID = ${advisorID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/academicAdvisors');
+        }
+    });
+});
+
 // -----------------------Handle Updates---------------------------------------------------
 
 // update course

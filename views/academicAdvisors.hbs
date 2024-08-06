@@ -74,7 +74,7 @@
         <input type="text" name="name" id="edit-name" required>
         
         <label for="edit-">Salary: </label>
-        <input type="number" name="salary" id="edit-salary" required>
+        <input type="number" name="salary" id="edit-salary" min="0" required>
 
         <input type="submit" value="Update">
     </form>
@@ -88,10 +88,10 @@
 <p><strong>To add a new academic advisor, please enter their information below and click `Submit`!</strong></p>
 <form id="add-advisor-form" method="POST" action="/add-advisor-form">
     <label for="input-name">Name: </label>
-    <input type="text" name="input-name" id="input-name">
+    <input type="text" name="input-name" id="input-name" required>
     
     <label for="input-salary">Salary: </label>
-    <input type="number" name="input-salary" id="input-salary">
+    <input type="number" name="input-salary" id="input-salary" min="0" required>
 
     <input type="submit">
 </form>
