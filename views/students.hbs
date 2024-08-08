@@ -86,7 +86,7 @@
             <td>{{this.gpa}}</td>
             <td>{{this.isActive}}</td>
             <td>{{#if this.departmentID}}{{this.departmentID}}{{else}}Undeclared{{/if}}</td>
-            <td>{{this.advisorID}}</td>
+            <td>{{#if this.advisorID}}{{this.advisorID}}{{else}}None{{/if}}</td>
              <td>
                 {{!-- creates delete button that will delete a faculty when clicked--}}
                 <form method="POST" action="/delete-student/{{this.studentID}}">
@@ -164,7 +164,7 @@
     </select>
 
     <label for="input-departmentID">Department: </label>
-    <select name="input-departmentID" id="input-departmentID" required>
+    <select name="input-departmentID" id="input-departmentID">
         <option value="">Select a Department</option>
         {{#each departments}}
         <option value="{{this.departmentID}}">{{this.name}}</option>

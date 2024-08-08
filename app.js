@@ -355,6 +355,22 @@ app.post('/delete-faculty/:facultyID', function(req, res) {
     });
 });
 
+// delete student
+app.post('/delete-student/:studentID', function(req, res) {
+    let studentID = req.params.studentID;
+
+    let query = `DELETE FROM Students WHERE studentID = ${studentID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/students');
+        }
+    });
+});
+
 // -----------------------Handle Updates---------------------------------------------------
 
 // update course

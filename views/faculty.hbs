@@ -68,7 +68,7 @@
             <td>{{this.name}}</td>
             <td>{{this.salary}}</td>
             <td>{{this.departmentID}}</td>
-            <td>{{this.advisorID}}</td>
+            <td>{{#if this.advisorID}}{{this.advisorID}}{{else}}None{{/if}}</td>
              <td>
                 {{!-- creates delete button that will delete a faculty when clicked--}}
                 <form method="POST" action="/delete-faculty/{{this.facultyID}}">
