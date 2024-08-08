@@ -47,7 +47,7 @@
             document.getElementById('edit-isActive').value = isActive;
             document.getElementById('edit-departmentID').value = departmentID;
             document.getElementById('edit-advisorID').value = advisorID;
-            document.getElementById('edit-faculty-form').style.display = 'block';
+            document.getElementById('edit-student-form').style.display = 'block';
         }
     </script>
 </head>
@@ -85,7 +85,7 @@
             <td>{{this.dateOfBirth}}</td>
             <td>{{this.gpa}}</td>
             <td>{{this.isActive}}</td>
-            <td>{{this.departmentID}}</td>
+            <td>{{#if this.departmentID}}{{this.departmentID}}{{else}}Undeclared{{/if}}</td>
             <td>{{this.advisorID}}</td>
              <td>
                 {{!-- creates delete button that will delete a faculty when clicked--}}
@@ -107,7 +107,7 @@
 
     <form id="edit-student-form" method="POST" action="/update-student" style="display: none;">
         <p>To edit a student, please enter the required information below and click `Update`!</p>
-        <input type="hidden" id="edit-faculty-id" name="facultyID">
+        <input type="hidden" id="edit-student-id" name="studentID">
         <label for="edit-name">Name: </label>
         <input type="text" name="name" id="edit-name" required>
 
@@ -115,10 +115,11 @@
         <input type="date" name="dateOfBirth" id="edit-dateOfBirth" required>
         
         <label for="edit-gpa">GPA: </label>
-        <input type="number" name="gpa" id="edit-gpa" step=".01">
+        <input type="number" name="gpa" id="edit-gpa" step="0.01" max="4">
 
         <label for="edit-isActive">Is Active? </label>
-        <select name="isActive" id="edit-isActive" required>
+        <select name="isActive" id="edit-isActive">
+            <option value="null"></option>
             <option value="1">Yes</option>
             <option value="0">No</option>
         </select>
@@ -149,32 +150,28 @@
 <form id="add-student-form" method="POST" action="/add-student-form">
     <label for="input-name">Name: </label>
     <input type="text" name="input-name" id="input-name" required>
-    
+
     <label for="input-dateOfBirth">Date Of Birth: </label>
-    <input type="date" name="input-dateOfBirth" id="input-dateOfBirth"  required>
+    <input type="date" name="input-dateOfBirth" id="input-dateOfBirth" required>
 
     <label for="input-gpa">GPA: </label>
-    <input type="number" name="input-gpa" id="input-gpa" step="0.1">
+    <input type="number" name="input-gpa" id="input-gpa" step="0.01" max="4">
 
-    <label for="edit-isActive">Is Active? </label>
-        <select name="isActive" id="edit-isActive" required>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select>
+    <label for="input-isActive">Is Active? </label>
+    <select name="input-isActive" id="input-isActive">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select>
 
-    {{!-- <label for="input-departmentID">Department ID: </label>
-    <input type="number" name="input-departmentID" id="input-departmentID"> --}}
-
-    <select name="input-departmentID" id="input-departmentID">
+    <label for="input-departmentID">Department: </label>
+    <select name="input-departmentID" id="input-departmentID" required>
         <option value="">Select a Department</option>
         {{#each departments}}
         <option value="{{this.departmentID}}">{{this.name}}</option>
         {{/each}}
     </select>
 
-    {{!-- <label for="input-facultyID">Faculty ID: </label>
-    <input type="number" name="input-facultyID" id="input-facultyID"> --}}
-
+    <label for="input-advisorID">Advisor: </label>
     <select name="input-advisorID" id="input-advisorID" required>
         <option value="">Select an Advisor</option>
         {{#each advisor}}
@@ -182,7 +179,7 @@
         {{/each}}
     </select>
 
-    <input type="submit">
+    <input type="submit" value="Submit">
 </form>
 
 </body>

@@ -262,34 +262,28 @@ app.get('/students', function(req, res) {
 })
 });
 
-// Code that handles adding a new faculty member to the database. Adapted from node starter code
-app.post('/add-faculty-form', function(req, res) {
-    // Capture the incoming data and parse it back to a JS object
+// Code that handles adding a new student to the database. Adapted from node starter code
+app.post('/add-student-form', function(req, res) {
     let data = req.body;
 
-    // Log the data to verify it is coming through correctly
-    console.log(data);
+    console.log('Received data:', data);
 
-    let salary = parseInt(data['input-salary'])
+    let dateOfBirth = new Date(data['input-dateOfBirth']);
+    let formattedDate = `${dateOfBirth.getFullYear()}-${('0' + (dateOfBirth.getMonth() + 1)).slice(-2)}-${('0' + dateOfBirth.getDate()).slice(-2)}`;
 
-    let departmentID = parseInt(data['input-departmentID']);
+    let gpa = parseFloat(data['input-gpa']) || null;
+    let isActive = parseInt(data['input-isActive']) || 0;
+    let departmentID = parseInt(data['input-departmentID']) || null;
+    let advisorID = parseInt(data['input-advisorID']) || null;
 
-    let advisorID = parseInt(data['input-advisorID']);
+    let query = `INSERT INTO Students (name, dateOfBirth, gpa, isActive, departmentID, advisorID) VALUES ('${data['input-name']}', '${formattedDate}', ${gpa}, ${isActive}, ${departmentID || 'NULL'}, ${advisorID})`;
 
-    // Create the query and run it on the database
-    let query1 = `INSERT INTO Faculty (name, salary, departmentID, advisorID) VALUES ('${data['input-name']}', ${salary}, ${departmentID}, ${advisorID})`;
-
-    db.pool.query(query1, function(error, rows, fields) {
-        // Check to see if there was an error
+    db.pool.query(query, [data['input-name'], formattedDate, gpa, isActive, departmentID, advisorID], function(error) {
         if (error) {
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Departments and
-            // presents it on the screen
-            res.redirect('/faculty');
+            console.error('Database error:', error);
+            return res.sendStatus(400);
         }
+        res.redirect('/students');
     });
 });
 
