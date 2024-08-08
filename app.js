@@ -235,6 +235,64 @@ app.post('/add-faculty-form', function(req, res) {
 });
 
 
+// code that handles reading the students table
+app.get('/students', function(req, res) {
+    let query1 = "SELECT * FROM Students;";               // Define our query
+
+    let query2 = "SELECT * FROM Departments;";
+
+    let query3 = "SELECT * FROM AcademicAdvisors;";
+
+    // Run query3
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+        let student = rows;
+
+         // Run query2
+        db.pool.query(query2, (error, rows, fields) => {
+
+        let departments = rows;
+
+        db.pool.query(query3, (error, rows, fields) => {
+
+            let advisor = rows;
+        res.render('students', {data: student, departments: departments, advisor:advisor});                  // Render the index.hbs file, and also send the renderer
+        }) 
+    })
+})
+});
+
+// Code that handles adding a new faculty member to the database. Adapted from node starter code
+app.post('/add-faculty-form', function(req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Log the data to verify it is coming through correctly
+    console.log(data);
+
+    let salary = parseInt(data['input-salary'])
+
+    let departmentID = parseInt(data['input-departmentID']);
+
+    let advisorID = parseInt(data['input-advisorID']);
+
+    // Create the query and run it on the database
+    let query1 = `INSERT INTO Faculty (name, salary, departmentID, advisorID) VALUES ('${data['input-name']}', ${salary}, ${departmentID}, ${advisorID})`;
+
+    db.pool.query(query1, function(error, rows, fields) {
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Departments and
+            // presents it on the screen
+            res.redirect('/faculty');
+        }
+    });
+});
+
 
 
 

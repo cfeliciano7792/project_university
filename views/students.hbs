@@ -22,6 +22,20 @@
             border: 1px solid #ccc;
             background-color: #fff;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Ensure borders are shared between adjacent cells */
+        }
+
+        th, td {
+            border: 1px solid black; /* Set border around cells */
+            padding: 8px; /* Add some padding for readability */
+            text-align: left; /* Align text to the left */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Optional: Add a background color to headers for better visibility */
+        }
     </style>
     <script>
         // this function keeps the update form hidden until a user clickes the update button
@@ -137,7 +151,7 @@
     <input type="text" name="input-name" id="input-name" required>
     
     <label for="input-dateOfBirth">Date Of Birth: </label>
-    <input type="number" name="input-dateOfBirth" id="input-dateOfBirth"  required>
+    <input type="date" name="input-dateOfBirth" id="input-dateOfBirth"  required>
 
     <label for="input-gpa">GPA: </label>
     <input type="number" name="input-gpa" id="input-gpa" step="0.1">
