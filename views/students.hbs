@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Faculty</title>
+    <title>Students</title>
     <style>
         /* Style invalid form fields */
         input:invalid, select:invalid {
@@ -25,10 +25,12 @@
     </style>
     <script>
         // this function keeps the update form hidden until a user clickes the update button
-        function openEditForm(facultyID, name, salary, departmentID, advisorID) {
-            document.getElementById('edit-faculty-id').value = facultyID;
+        function openEditForm(studentID, name, dateOfBirth, gpa, isActive, departmentID, advisorID) {
+            document.getElementById('edit-student-id').value = studentID;
             document.getElementById('edit-name').value = name;
-            document.getElementById('edit-salary').value = salary;
+            document.getElementById('edit-dateOfBirth').value = dateOfBirth;
+            document.getElementById('edit-gpa').value = gpa;
+            document.getElementById('edit-isActive').value = isActive;
             document.getElementById('edit-departmentID').value = departmentID;
             document.getElementById('edit-advisorID').value = advisorID;
             document.getElementById('edit-faculty-form').style.display = 'block';
@@ -36,8 +38,8 @@
     </script>
 </head>
 <body>
-    <h1>Faculty</h1>
-    <p>This is the faculty page.</p>
+    <h1>Students</h1>
+    <p>This is the student page.</p>
 
 {{!-- Create a table --}}
 <table>
@@ -64,20 +66,22 @@
         {{!-- For each row, print the facultyID, name, salary, department and advisorID, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.facultyID}}</td>
+            <td>{{this.studentID}}</td>
             <td>{{this.name}}</td>
-            <td>{{this.salary}}</td>
+            <td>{{this.dateOfBirth}}</td>
+            <td>{{this.gpa}}</td>
+            <td>{{this.isActive}}</td>
             <td>{{this.departmentID}}</td>
             <td>{{this.advisorID}}</td>
              <td>
                 {{!-- creates delete button that will delete a faculty when clicked--}}
-                <form method="POST" action="/delete-faculty/{{this.facultyID}}">
+                <form method="POST" action="/delete-student/{{this.studentID}}">
                     <button type="submit">Delete</button>
                 </form>
             </td>
             <td>
                 {{!-- creates udate button --}}
-                <button onclick="openEditForm('{{this.facultyID}}', '{{this.name}}', '{{this.salary}}', '{{this.departmentID}}', '{{this.advisorID}}')">Edit</button>
+                <button onclick="openEditForm('{{this.studentID}}', '{{this.name}}', '{{this.dateOfBirth}}', '{{this.gpa}}', '{{this.isActive}}', '{{this.departmentID}}', '{{this.advisorID}}')">Edit</button>
             </td>
         </tr>
         {{/each}}
@@ -87,18 +91,29 @@
 
 {{!-- // Edit form - will remain hidden until edit button is clicked --}}
 
-    <form id="edit-faculty-form" method="POST" action="/update-faculty" style="display: none;">
-        <p>To edit a new faculty member, please enter the required information below and click `Update`!</p>
+    <form id="edit-student-form" method="POST" action="/update-student" style="display: none;">
+        <p>To edit a student, please enter the required information below and click `Update`!</p>
         <input type="hidden" id="edit-faculty-id" name="facultyID">
         <label for="edit-name">Name: </label>
         <input type="text" name="name" id="edit-name" required>
+
+        <label for="edit-dateOfBirth">Date of Birth: </label>
+        <input type="date" name="dateOfBirth" id="edit-dateOfBirth" required>
         
-        <label for="edit-salary">Salary: </label>
-        <input type="number" name="salary" id="edit-salary" min="0">
+        <label for="edit-gpa">GPA: </label>
+        <input type="number" name="gpa" id="edit-gpa" step=".01">
+
+        <label for="edit-isActive">Is Active? </label>
+        <select name="isActive" id="edit-isActive" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
             {{!-- This creates a dynamic dropdown for FK values --}}
-        <select name="departmentID" id="edit-departmentID" required>
+        <select name="departmentID" id="edit-departmentID">
             <option value="">Select a Department</option>
             {{#each departments}}
+            <option value=""></option>
             <option value="{{this.departmentID}}">{{this.name}}</option>
             {{/each}}
         </select>
@@ -115,19 +130,28 @@
 
 <br>
 <br>
-{{!-- This form allows a user to add a new faculty member --}}
-<p>To add a new faculty member, please enter the required information below and click `Submit`!</p>
-<form id="add-faculty-form" method="POST" action="/add-faculty-form">
+{{!-- This form allows a user to add a new student --}}
+<p>To add a new student, please enter the required information below and click `Submit`!</p>
+<form id="add-student-form" method="POST" action="/add-student-form">
     <label for="input-name">Name: </label>
     <input type="text" name="input-name" id="input-name" required>
     
-    <label for="input-salary">Salary: </label>
-    <input type="number" name="input-salary" id="input-salary" min="0" required>
+    <label for="input-dateOfBirth">Date Of Birth: </label>
+    <input type="number" name="input-dateOfBirth" id="input-dateOfBirth"  required>
+
+    <label for="input-gpa">GPA: </label>
+    <input type="number" name="input-gpa" id="input-gpa" step="0.1">
+
+    <label for="edit-isActive">Is Active? </label>
+        <select name="isActive" id="edit-isActive" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
 
     {{!-- <label for="input-departmentID">Department ID: </label>
     <input type="number" name="input-departmentID" id="input-departmentID"> --}}
 
-    <select name="input-departmentID" id="input-departmentID" required>
+    <select name="input-departmentID" id="input-departmentID">
         <option value="">Select a Department</option>
         {{#each departments}}
         <option value="{{this.departmentID}}">{{this.name}}</option>
