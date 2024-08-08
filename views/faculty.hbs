@@ -1,0 +1,138 @@
+{{!-- # Citation for faculty.hbs:
+# Date: 8/8/2024
+# Copied from the cs340 Node Starter guide:
+# Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
+
+<!-- views/courses.hbs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Faculty</title>
+    <script>
+        // this function keeps the update form hidden until a user clickes the update button
+        function openEditForm(facultyID, name, salary, departmentID, advisorID) {
+            document.getElementById('edit-faculty-id').value = facultyID;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-salary').value = salary;
+            document.getElementById('edit-departmentID').value = departmentID;
+            document.getElementById('edit-advisorID').value = advisorID;
+            document.getElementById('edit-faculty-form').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>Faculty</h1>
+    <p>This is the faculty page.</p>
+
+{{!-- Create a table --}}
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the facultyID, name, salary, department and advisorID, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.facultyID}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.salary}}</td>
+            <td>{{this.departmentID}}</td>
+            <td>{{this.advisorID}}</td>
+             <td>
+                {{!-- creates delete button that will delete a faculty when clicked--}}
+                <form method="POST" action="/delete-faculty/{{this.facultyID}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td>
+                {{!-- creates udate button --}}
+                <button onclick="openEditForm('{{this.facultyID}}', '{{this.name}}', '{{this.salary}}', '{{this.departmentID}}', '{{this.advisorID}}')">Edit</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<br>
+
+{{!-- // Edit form - will remain hidden until edit button is clicked --}}
+
+    <form id="edit-faculty-form" method="POST" action="/update-faculty" style="display: none;">
+        <p>To edit a new faculty member, please enter the required information below and click `Update`!</p>
+        <input type="hidden" id="edit-faculty-id" name="facultyID">
+        <label for="edit-name">Name: </label>
+        <input type="text" name="name" id="edit-name" required>
+        
+        <label for="edit-salary">Salary: </label>
+        <input type="number" name="salary" id="edit-salary" min="0">
+            {{!-- This creates a dynamic dropdown for FK values --}}
+        <select name="departmentID" id="edit-departmentID" required>
+            <option value="">Select a Department</option>
+            {{#each departments}}
+            <option value="{{this.departmentID}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+
+        <select name="advisorID" id="edit-advisorID">
+            <option value="">Select an Advisor</option>
+            {{#each advisor}}
+            <option value="{{this.advisorID}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+
+        <input type="submit" value="Update">
+    </form>
+
+<br>
+<br>
+{{!-- This form allows a user to add a new faculty member --}}
+<p>To add a new faculty member, please enter the required information below and click `Submit`!</p>
+<form id="add-faculty-form" method="POST" action="/add-faculty-form">
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name" required>
+    
+    <label for="input-salary">Salary: </label>
+    <input type="number" name="input-salary" id="input-salary" min="0" required>
+
+    {{!-- <label for="input-departmentID">Department ID: </label>
+    <input type="number" name="input-departmentID" id="input-departmentID"> --}}
+
+    <select name="input-departmentID" id="input-departmentID" required>
+        <option value="">Select a Department</option>
+        {{#each departments}}
+        <option value="{{this.departmentID}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    {{!-- <label for="input-facultyID">Faculty ID: </label>
+    <input type="number" name="input-facultyID" id="input-facultyID"> --}}
+
+    <select name="input-advisorID" id="input-advisorID">
+        <option value="">Select an Advisor</option>
+        {{#each advisor}}
+        <option value="{{this.advisorID}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit">
+</form>
+
+</body>
+</html>

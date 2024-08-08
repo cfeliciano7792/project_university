@@ -174,6 +174,77 @@ app.get('/', function(req, res)
         });
     });
 
+
+
+// code that handles reading the faculty table
+app.get('/faculty', function(req, res) {
+    let query1 = "SELECT * FROM Faculty;";               // Define our query
+
+    let query2 = "SELECT * FROM Departments;";
+
+    let query3 = "SELECT * FROM AcademicAdvisors;";
+
+    // Run query3
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+        let faculty = rows;
+
+         // Run query2
+        db.pool.query(query2, (error, rows, fields) => {
+
+        let departments = rows;
+
+        db.pool.query(query3, (error, rows, fields) => {
+
+            let advisor = rows;
+        res.render('faculty', {data: faculty, departments: departments, advisor:advisor});                  // Render the index.hbs file, and also send the renderer
+        }) 
+    })
+})
+});
+
+// Code that handles adding a new course to the database. Adapted from node starter code
+app.post('/add-course-form', function(req, res) {
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Log the data to verify it is coming through correctly
+    console.log(data);
+
+    // Capture NULL values
+    let credits = parseInt(data['input-credits']);
+    if (isNaN(credits)) {
+        credits = 0;
+    }
+
+    let departmentID = parseInt(data['input-departmentID']);
+
+let facultyID = parseInt(data['input-facultyID']);
+    if (isNaN(facultyID)) {
+        facultyID = 'NULL';  
+    }
+
+    // Create the query and run it on the database
+    let query1 = `INSERT INTO Courses (title, credits, departmentID, facultyID) VALUES ('${data['input-title']}', ${credits}, ${departmentID}, ${facultyID})`;
+
+    db.pool.query(query1, function(error, rows, fields) {
+        // Check to see if there was an error
+        if (error) {
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Departments and
+            // presents it on the screen
+            res.redirect('/courses');
+        }
+    });
+});
+
+
+
+
+
 // -----------------------Handle Deletes---------------------------------------------------
 // Delete course
 app.post('/delete-course/:courseID', function(req, res) {
