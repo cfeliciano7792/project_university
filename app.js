@@ -203,29 +203,22 @@ app.get('/faculty', function(req, res) {
 })
 });
 
-// Code that handles adding a new course to the database. Adapted from node starter code
-app.post('/add-course-form', function(req, res) {
+// Code that handles adding a new faculty member to the database. Adapted from node starter code
+app.post('/add-faculty-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
     // Log the data to verify it is coming through correctly
     console.log(data);
 
-    // Capture NULL values
-    let credits = parseInt(data['input-credits']);
-    if (isNaN(credits)) {
-        credits = 0;
-    }
+    let salary = parseInt(data['input-salary'])
 
     let departmentID = parseInt(data['input-departmentID']);
 
-let facultyID = parseInt(data['input-facultyID']);
-    if (isNaN(facultyID)) {
-        facultyID = 'NULL';  
-    }
+    let advisorID = parseInt(data['input-advisorID']);
 
     // Create the query and run it on the database
-    let query1 = `INSERT INTO Courses (title, credits, departmentID, facultyID) VALUES ('${data['input-title']}', ${credits}, ${departmentID}, ${facultyID})`;
+    let query1 = `INSERT INTO Faculty (name, salary, departmentID, advisorID) VALUES ('${data['input-name']}', ${salary}, ${departmentID}, ${advisorID})`;
 
     db.pool.query(query1, function(error, rows, fields) {
         // Check to see if there was an error
@@ -236,7 +229,7 @@ let facultyID = parseInt(data['input-facultyID']);
         } else {
             // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM Departments and
             // presents it on the screen
-            res.redirect('/courses');
+            res.redirect('/faculty');
         }
     });
 });
@@ -278,6 +271,7 @@ app.post('/delete-department/:departmentID', function(req, res) {
     });
 });
 
+// delete advisor
 app.post('/delete-advisor/:advisorID', function(req, res) {
     let advisorID = req.params.advisorID;
 
@@ -289,6 +283,22 @@ app.post('/delete-advisor/:advisorID', function(req, res) {
             res.sendStatus(400);
         } else {
             res.redirect('/academicAdvisors');
+        }
+    });
+});
+
+// delete faculty
+app.post('/delete-faculty/:facultyID', function(req, res) {
+    let facultyID = req.params.facultyID;
+
+    let query = `DELETE FROM Faculty WHERE facultyID = ${facultyID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/faculty');
         }
     });
 });
@@ -360,6 +370,30 @@ app.post('/update-advisor', function(req, res) {
         }
     });
 });
+
+// update faculty
+app.post('/update-faculty', function(req, res) {
+    let data = req.body;
+
+    // Capture NULL values
+    let salary = parseInt(data['salary']);
+
+    let departmentID = parseInt(data['departmentID']);
+    let advisorID = parseInt(data['advisorID']);
+
+    // Create the query and run it on the database
+    let query = `UPDATE Faculty SET name = '${data['name']}', salary = ${salary}, departmentID = ${departmentID}, advisorID = ${advisorID} WHERE facultyID = ${data['facultyID']}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/faculty');
+        }
+    });
+});
+
 
 
     /*

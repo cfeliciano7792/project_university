@@ -10,6 +10,19 @@
 <head>
     <meta charset="utf-8">
     <title>Faculty</title>
+    <style>
+        /* Style invalid form fields */
+        input:invalid, select:invalid {
+            border: 2px solid red;
+            background-color: #ffe6e6;
+        }
+
+        /* Optional: Style the input fields back to normal when they are valid */
+        input:valid, select:valid {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+    </style>
     <script>
         // this function keeps the update form hidden until a user clickes the update button
         function openEditForm(facultyID, name, salary, departmentID, advisorID) {
@@ -124,7 +137,7 @@
     {{!-- <label for="input-facultyID">Faculty ID: </label>
     <input type="number" name="input-facultyID" id="input-facultyID"> --}}
 
-    <select name="input-advisorID" id="input-advisorID">
+    <select name="input-advisorID" id="input-advisorID" required>
         <option value="">Select an Advisor</option>
         {{#each advisor}}
         <option value="{{this.advisorID}}">{{this.name}}</option>
