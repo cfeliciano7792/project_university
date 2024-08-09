@@ -549,6 +549,31 @@ app.post('/update-enrollment', function(req, res) {
     });
 });
 
+// update students
+app.post('/update-student', function(req, res) {
+    let data = req.body;
+
+    // Capture and convert data
+    let studentID = parseInt(data['studentID']);
+    let name = data['name'];
+    let dateOfBirth = data['dateOfBirth']; 
+    let gpa = parseFloat(data['gpa']);
+    let isActive = data['isActive']; 
+    let departmentID = data['departmentID'] ? parseInt(data['departmentID']) : null;;
+    let advisorID = data['advisorID'] ? parseInt(data['advisorID']) : null;
+
+    // Create the query and run it on the database
+    let query = `UPDATE Students SET name = '${name}', dateOfBirth = '${dateOfBirth}', gpa = ${gpa}, isActive = ${isActive}, departmentID = ${departmentID}, advisorID = ${advisorID} WHERE studentID = ${studentID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/students'); // Redirect to the student page after update
+        }
+    });
+});
 
 
 
