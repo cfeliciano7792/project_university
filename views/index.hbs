@@ -9,6 +9,33 @@
 <head>
     <meta charset="utf-8">
     <title>Departments</title>
+    <style>
+        /* Style invalid form fields */
+        input:invalid, select:invalid {
+            border: 2px solid red;
+            background-color: #ffe6e6;
+        }
+
+        /* Style the input fields back to normal when they are valid */
+        input:valid, select:valid {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse; 
+        }
+
+        th, td {
+            border: 1px solid black; /* Set border around cells */
+            padding: 8px; /* Add some padding for better readability */
+            text-align: left; 
+        }
+
+        th {
+            background-color: #f2f2f2; 
+        }
+    </style>
     {{!-- keeps edit form hidden until the update button is clicked --}}
     <script>
         function openEditForm(departmentID, name, budget) {
