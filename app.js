@@ -288,6 +288,54 @@ app.post('/add-student-form', function(req, res) {
 });
 
 
+// code that handles reading the StudentHasCourses table
+app.get('/studentCourses', function(req, res) {
+    let query1 = "SELECT * FROM StudentHasCourses;";               // Define our query
+
+    let query2 = "SELECT * FROM Students;";
+
+    let query3 = "SELECT * FROM Courses;";
+
+    // Run query3
+    db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+        let studentCourses = rows;
+
+         // Run query2
+        db.pool.query(query2, (error, rows, fields) => {
+
+        let students = rows;
+
+        db.pool.query(query3, (error, rows, fields) => {
+
+            let courses = rows;
+        res.render('studentCourses', {data: studentCourses, students: students, courses:courses});                  // Render the index.hbs file, and also send the renderer
+        }) 
+    })
+})
+});
+
+// Code that handles adding a new student to the database. Adapted from node starter code
+app.post('/add-enrollment-form', function(req, res) {
+    let data = req.body;
+
+    // Assuming data includes studentID, courseID, and grade
+    let studentID = parseInt(data['studentID']);
+    let courseID = parseInt(data['courseID']);
+    let grade = data['grade'];
+
+    // Directly inputting the data into the SQL query
+    let query = `INSERT INTO StudentHasCourses (studentID, courseID, grade) VALUES (${studentID}, ${courseID}, '${grade}')`;
+
+    db.pool.query(query, function(error) {
+        if (error) {
+            console.error('Database error:', error);
+            return res.sendStatus(400);
+        }
+        res.redirect('/studentCourses');
+    });
+});
+
 
 
 // -----------------------Handle Deletes---------------------------------------------------
@@ -367,6 +415,22 @@ app.post('/delete-student/:studentID', function(req, res) {
             res.sendStatus(400);
         } else {
             res.redirect('/students');
+        }
+    });
+});
+
+// delete student enrollment
+app.post('/delete-enrollment/:enrollmentID', function(req, res) {
+    let enrollmentID = req.params.enrollmentID;
+
+    let query = `DELETE FROM StudentHasCourses WHERE enrollmentID = ${enrollmentID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/studentCourses');
         }
     });
 });
@@ -461,6 +525,30 @@ app.post('/update-faculty', function(req, res) {
         }
     });
 });
+
+// update studentEnrollment
+app.post('/update-enrollment', function(req, res) {
+    let data = req.body;
+
+    // Capture and convert data
+    let enrollmentID = parseInt(data['enrollmentID']);
+    let studentID = parseInt(data['studentID']);
+    let courseID = parseInt(data['courseID']);
+    let grade = data['grade']; 
+
+    // Create the query and run it on the database
+    let query = `UPDATE StudentHasCourses SET studentID = ${studentID}, courseID = ${courseID}, grade = '${grade}' WHERE enrollmentID = ${enrollmentID}`;
+
+    db.pool.query(query, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/studentCourses'); 
+        }
+    });
+});
+
 
 
 

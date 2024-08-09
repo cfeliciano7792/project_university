@@ -1,0 +1,147 @@
+{{!-- # Citation for studentCourses.hbs:
+# Date: 8/1/2024
+# Copied from the cs340 Node Starter guide:
+# Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app --}}
+
+<!-- views/studentCourses.hbs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Student Courses</title>
+    <style>
+        /* Style invalid form fields */
+        input:invalid, select:invalid {
+            border: 2px solid red;
+            background-color: #ffe6e6;
+        }
+
+        /* Style the input fields back to normal when they are valid */
+        input:valid, select:valid {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse; 
+        }
+
+        th, td {
+            border: 1px solid black; /* Set border around cells */
+            padding: 8px; /* Add some padding for better readability */
+            text-align: left; 
+        }
+
+        th {
+            background-color: #f2f2f2; 
+        }
+    </style>
+    <script>
+        // This function keeps the update form hidden until a user clicks the update button
+        function openEditForm(studentID, courseID, enrollmentID, grade) {
+            document.getElementById('edit-student-id').value = studentID;
+            document.getElementById('edit-course-id').value = courseID;
+            document.getElementById('edit-enrollment-id').value = enrollmentID;
+            document.getElementById('edit-grade').value = grade;
+            document.getElementById('edit-enrollment-form').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>Student Courses</h1>
+    <p>This is the Student Courses page.</p>
+
+    <!-- Create a table -->
+    <table>
+
+        <!-- Header section -->
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Course ID</th>
+                <th>Enrollment ID</th>
+                <th>Grade</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+
+        <!-- Body section -->
+        <tbody>
+            {{#each data}}
+            {{#if this.studentID}} <!-- Add this check to avoid rendering undefined rows -->
+            <tr>
+                <td>{{this.studentID}}</td>
+                <td>{{this.courseID}}</td>
+                <td>{{this.enrollmentID}}</td>
+                <td>{{this.grade}}</td>
+                <td>
+                    <!-- Creates delete button that will delete a student course enrollment when clicked -->
+                    <form method="POST" action="/delete-enrollment/{{this.enrollmentID}}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- Creates update button -->
+                    <button onclick="openEditForm('{{this.studentID}}', '{{this.courseID}}', '{{this.enrollmentID}}', '{{this.grade}}')">Edit</button>
+                </td>
+            </tr>
+            {{/if}}
+            {{/each}}
+        </tbody>
+    </table>
+    <br>
+
+    <!-- Edit form, hidden by default -->
+    <form id="edit-enrollment-form" style="display:none;" method="POST" action="/update-enrollment">
+        <input type="hidden" id="edit-enrollment-id" name="enrollmentID" required>
+        
+        <label for="edit-student-id">Student: </label>
+        <select name="studentID" id="edit-student-id" required>
+            <option value="">Select a Student</option>
+            {{#each students}}
+                <option value="{{this.studentID}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+
+        <label for="edit-course-id">Course: </label>
+        <select name="courseID" id="edit-course-id" required>
+            <option value="">Select a Course</option>
+            {{#each courses}}
+                <option value="{{this.courseID}}">{{this.title}}</option>
+            {{/each}}
+        </select>
+
+        <label for="edit-grade">Grade:</label>
+        <input type="text" id="edit-grade" name="grade" maxlength="2" required>
+
+        <button type="submit">Update</button>
+    </form>
+    
+    <!-- This form allows a user to add a new student course enrollment -->
+<p>To add a new student course enrollment, please enter the required information below and click 'Submit'!</p>
+<form id="add-enrollment-form" method="POST" action="/add-enrollment-form">
+    <label for="input-studentID">Student: </label>
+    <select name="studentID" id="input-studentID" required>
+        <option value="">Select a Student</option>
+        {{#each students}}
+            <option value="{{this.studentID}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-courseID">Course: </label>
+    <select name="courseID" id="input-courseID" required>
+        <option value="">Select a Course</option>
+        {{#each courses}}
+            <option value="{{this.courseID}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-grade">Grade: </label>
+    <input type="text" name="grade" id="input-grade" required>
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
