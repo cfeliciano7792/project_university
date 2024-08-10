@@ -318,8 +318,9 @@ app.get('/studentCourses', function(req, res) {
 // Code that handles adding a new student to the database. Adapted from node starter code
 app.post('/add-enrollment-form', function(req, res) {
     let data = req.body;
+    console.log(req.body)
 
-    // Assuming data includes studentID, courseID, and grade
+    
     let studentID = parseInt(data['studentID']);
     let courseID = parseInt(data['courseID']);
     let grade = data['grade'];
@@ -335,6 +336,8 @@ app.post('/add-enrollment-form', function(req, res) {
         res.redirect('/studentCourses');
     });
 });
+
+
 
 
 
